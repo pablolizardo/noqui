@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Denunciante {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  email  String  @unique
+  name   String?
+  noquis Noqui[]
+}
+
+model Noqui {
+  id               String       @id @default(auto()) @map("_id") @db.ObjectId
+  nombre           String?
+  dni              String?
+  cuitCuil         String?
+  cargo            String?
+  antiguedadCarg   Int?
+  sueldo           Int?
+  organismo        Organismo?
+  nombreOrganismo  String?
+  provincia        String?
+  ciudad           String?
+  comentario       String?
+  anonima          Boolean?     @default(true)
+  familiarDe       String?
+  familiarRelacion Relacion?
+  denunciante      Denunciante? @relation(fields: [denuncianteId], references: [id])
+  denuncianteId    String?      @db.ObjectId
+}
+
+enum Relacion {
+  HIJO_HIJA
+  PADRE_MADRE
+  HERMANO_HERMANA
+  PRIMO_PRIMA
+  TIO_TIA
+  ESPOSO_ESPOSA
+  CONYUGUE
+  VIUDO_VIUDA
+  AMIGO
+  SUEGRO_SUEGRA
+  SOBRINO_SOBRINA
+  ABUELO_ABUELA
+  OTRA
+}
+
+enum Organismo {
+  ADMINISTRACION_PUBLICA_NACIONAL_CENTRALIZADA
+  ADMINISTRACION_PUBLICA_NACIONAL_DESCENTRALIZADA
+  EMPRESA_DE_ESTADO_NACIONAL
+  ENTE_PUBLICO_O_PRIVADO_CON_PARTICIPACION_NACIONAL
+  PODER_LEGISLATIVO_JUDICIAL_PROVINCIAL_MUNICIPIO
+  OTRO
+}
