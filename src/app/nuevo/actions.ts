@@ -2,7 +2,6 @@
 import { prisma } from "@/lib/prisma";
 import { Noqui } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
 
 export const handleSubmit = async (formData: FormData) => {
     "use server";
